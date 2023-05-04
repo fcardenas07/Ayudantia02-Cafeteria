@@ -1,44 +1,47 @@
 public class Cafe {
+    private final String tipo;
+    private final String size;
     private double gramos;
     private double mlAgua;
-    private String tamaño;
 
-    public Cafe(double gramos, double mlAgua, String tamaño) {
+    public Cafe(String tipo, double gramos, double mlAgua, String size) {
+        this.tipo = tipo;
         this.gramos = gramos;
         this.mlAgua = mlAgua;
-        this.tamaño = tamaño;
+        this.size = size;
+    }
+
+    public String getTipo() {
+        return tipo;
     }
 
     public double getGramos() {
         return gramos;
     }
 
-    public double getMlAgua() {
-        return mlAgua;
-    }
-
-    public String getTamaño() {
-        return tamaño;
-    }
-
     private void setGramos(double gramos) {
         this.gramos = gramos;
+    }
+
+    public double getMlAgua() {
+        return mlAgua;
     }
 
     public void setMlAgua(double mlAgua) {
         this.mlAgua = mlAgua;
     }
 
-    public void setTamaño(String tamaño) {
-        this.tamaño = tamaño;
+    public String getSize() {
+        return size;
     }
 
     @Override
     public String toString() {
-        return "Café{" +
-                "gramos=" + gramos +
+        return "Cafe{" +
+                "tipo='" + tipo + '\'' +
+                ", gramos=" + gramos +
                 ", mlAgua=" + mlAgua +
-                ", tamaño='" + tamaño + '\'' +
+                ", size='" + size + '\'' +
                 '}';
     }
 }
