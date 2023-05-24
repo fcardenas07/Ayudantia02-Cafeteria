@@ -1,17 +1,17 @@
 public class Cafe {
-    private final String tipo;
-    private final String size;
+    private final Tipo tipo;
+    private final Size size;
     private double gramos;
     private double mlAgua;
 
-    public Cafe(String tipo, double gramos, double mlAgua, String size) {
+    public Cafe(Tipo tipo, double gramos, double mlAgua, Size size) {
         this.tipo = tipo;
         this.gramos = gramos;
         this.mlAgua = mlAgua;
         this.size = size;
     }
 
-    public String getTipo() {
+    public Tipo getTipo() {
         return tipo;
     }
 
@@ -31,7 +31,7 @@ public class Cafe {
         this.mlAgua = mlAgua;
     }
 
-    public String getSize() {
+    public Size getSize() {
         return size;
     }
 

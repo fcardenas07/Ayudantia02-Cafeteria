@@ -1,98 +1,78 @@
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Cafeteria {
-    private final List<String> sizesDisponibles = List.of("Pequeno", "Mediano", "Grande");
-    private String nombre;
-    private String direccion;
-    private List<String> redesSociales;
-    private List<Cafe> cafesALaVenta;
+    private final String nombre;
+    private final String direccion;
+    private final List<String> rrss;
+    private final List<Cafe> cafesALaVenta;
 
-    public Cafeteria(String nombre, String direccion) {
+    private final List<Te> tesALaVenta;
+
+    public Cafeteria(String nombre, String direccion, List<String> rrss, List<Cafe> cafesALaVenta, List<Te> tesALaVenta) {
         this.nombre = nombre;
         this.direccion = direccion;
-    }
-
-    public Cafeteria(String nombre, String direccion, List<Cafe> cafesALaVenta) {
-        this.nombre = nombre;
-        this.direccion = direccion;
+        this.rrss = rrss;
         this.cafesALaVenta = cafesALaVenta;
-    }
-
-    public Cafeteria(String nombre, String direccion, ArrayList<String> redesSociales, ArrayList<Cafe> cafesALaVenta) {
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.redesSociales = redesSociales;
-        this.cafesALaVenta = cafesALaVenta;
-    }
-
-    public Cafeteria(String nombre, String direccion, ArrayList<String> redesSociales) {
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.redesSociales = redesSociales;
-        this.cafesALaVenta = new ArrayList<>();
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public List<String> getRedesSociales() {
-        return redesSociales;
+        this.tesALaVenta = tesALaVenta;
     }
 
     public List<Cafe> getCafesALaVenta() {
         return cafesALaVenta;
     }
 
-    public void agregarCafeVenta(String tipo, double gramos, double mlAgua, String size) {
-        try {
-            agregarCafe(tipo, gramos, mlAgua, size);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+    public void agregarCafeALaVenta(Cafe cafe) {
+        if (cafeNoValido(cafe)) return;
 
-    public void agregarCafe(String tipo, double gramos, double mlAgua, String size) throws IllegalArgumentException {
-        validarParametrosCafe(tipo, gramos, mlAgua, size);
-        Cafe cafe = new Cafe(tipo, gramos, mlAgua, size);
+        if (buscarCafe(cafe) != -1) {
+            System.out.println("No se pudo agregar, el cafe ya esta a la venta");
+            return;
+        }
         cafesALaVenta.add(cafe);
     }
 
-    public void validarParametrosCafe(String tipo, double gramos, double mlAgua, String size) {
-        if (tipo.isBlank()) {
+    public boolean cafeNoValido(Cafe cafe) {
+        try {
+            verificarParametrosCafe(cafe);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return true;
+        }
+        return false;
+    }
+
+    public void verificarParametrosCafe(Cafe cafe) {
+        if (cafe.getTipo() == null) {
             throw new IllegalArgumentException("Debe indicar un tipo de cafe");
         }
-        if (gramos <= 0) {
-            throw new IllegalArgumentException("La cantidad de gramos debe ser mayor a cero");
+        if (cafe.getGramos() <= 0) {
+            throw new IllegalArgumentException("Los gramos deben ser mayor a cero");
         }
-        if (mlAgua <= 0) {
-            throw new IllegalArgumentException("La cantidad de ml de agua debe ser mayor a cero");
+        if (cafe.getMlAgua() <= 0) {
+            throw new IllegalArgumentException("Los ml de agua deben ser mayor a cero");
         }
-        if (!sizesDisponibles.contains(size)) {
+        if (cafe.getSize() == null) {
             throw new IllegalArgumentException("Debe ser un tamaño que este disponible");
         }
     }
 
     public void eliminarCafeALaVenta(Cafe cafe) {
-        cafesALaVenta.remove(cafe);
+        if (cafeNoValido(cafe)) return;
+
+        int indiceCafe = buscarCafe(cafe);
+        if (indiceCafe == -1) {
+            System.out.println("No se pudo eliminar, el cafe no esta a la venta");
+            return;
+        }
+        cafesALaVenta.remove(indiceCafe);
     }
 
-    public boolean cafeEstaEnVenta(Cafe cafeBuscado) {
-        return cafesALaVenta.stream()
-                .anyMatch(cafe -> sonCafesIguales(cafeBuscado, cafe));
+    public int buscarCafe(Cafe cafe) {
+        return IntStream.range(0, cafesALaVenta.size())
+                .filter(indice -> sonCafesIguales(cafesALaVenta.get(indice), cafe))
+                .findFirst()
+                .orElse(-1);
     }
 
     public boolean sonCafesIguales(Cafe cafeBuscado, Cafe cafe) {
@@ -103,10 +83,10 @@ public class Cafeteria {
     @Override
     public String toString() {
         return "Cafeteria{" +
-                "sizesDisponibles=" + sizesDisponibles +
+                "sizesDisponibles=" + Arrays.toString(Size.values()) +
                 ", nombre='" + nombre + '\'' +
                 ", direccion='" + direccion + '\'' +
-                ", redesSociales=" + redesSociales +
+                ", redesSociales=" + rrss +
                 ", cafesALaVenta=" + cafesALaVenta +
                 "}";
     }
