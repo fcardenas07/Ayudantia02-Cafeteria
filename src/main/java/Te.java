@@ -1,38 +1,21 @@
 public class Te {
-    private final String tipo;
+    private final Categoria categoria = Categoria.TE;
+    private final TeTipo tipo;
     private final Size size;
-    private double gramos;
-    private double mlAgua;
+    private final int precio;
+    private final double gramos;
+    private final double mlAgua;
 
-    public Te(String tipo, Size size, double gramos, double mlAgua) {
+    public Te(TeTipo tipo, Size size, double gramos, double mlAgua) {
         this.tipo = tipo;
         this.size = size;
         this.gramos = gramos;
         this.mlAgua = mlAgua;
+        this.precio = calcularPrecio();
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public Size getSize() {
-        return size;
-    }
-
-    public double getGramos() {
-        return gramos;
-    }
-
-    public double getMlAgua() {
-        return mlAgua;
-    }
-
-    public void setGramos(double gramos) {
-        this.gramos = gramos;
-    }
-
-    public void setMlAgua(double mlAgua) {
-        this.mlAgua = mlAgua;
+    public int calcularPrecio() {
+        return tipo.precio() + size.getPrecio();
     }
 
     @Override

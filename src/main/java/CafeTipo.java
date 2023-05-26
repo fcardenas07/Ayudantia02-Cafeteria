@@ -1,9 +1,12 @@
-public enum Size {
-    PEQUEÑO(100), MEDIANO(200), GRANDE(300);
+public enum CafeTipo {
+    EXPRESSO(1000),
+    MOKA(1200),
+    CAPUCHINO(1100),
+    LATTE(1300);
 
     private final int precio;
 
-    Size(int precio) {
+    CafeTipo(int precio) {
         this.precio = precio;
     }
 
@@ -11,3 +14,4 @@ public enum Size {
         return precio;
     }
 }
+

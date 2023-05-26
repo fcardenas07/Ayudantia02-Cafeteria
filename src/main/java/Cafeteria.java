@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -5,26 +6,34 @@ import java.util.stream.IntStream;
 public class Cafeteria {
     private final String nombre;
     private final String direccion;
-    private final List<String> rrss;
-    private final List<Cafe> cafesALaVenta;
+    private final List<String> redesSociales;
+    private final List<Cafe> cafesALaVenta = new ArrayList<>();
 
-    private final List<Te> tesALaVenta;
+    private final List<Te> tesALaVenta = new ArrayList<>();
 
-    public Cafeteria(String nombre, String direccion, List<String> rrss, List<Cafe> cafesALaVenta, List<Te> tesALaVenta) {
+    private final List<Leche> lecheALaVenta = new ArrayList<>();
+    private final List<Trabajador> trabajadores = new ArrayList<>();
+    private final List<Cliente> clientes = new ArrayList<>();
+
+    public Cafeteria(String nombre, String direccion, List<String> redesSociales) {
         this.nombre = nombre;
         this.direccion = direccion;
-        this.rrss = rrss;
-        this.cafesALaVenta = cafesALaVenta;
-        this.tesALaVenta = tesALaVenta;
+        this.redesSociales = redesSociales;
     }
 
     public List<Cafe> getCafesALaVenta() {
         return cafesALaVenta;
     }
 
-    public void agregarCafeALaVenta(Cafe cafe) {
-        if (cafeNoValido(cafe)) return;
+    public List<Trabajador> getTrabajadores() {
+        return trabajadores;
+    }
 
+    public List<Cliente> getClientes() {
+        return clientes;
+    }
+
+    public void agregarCafeALaVenta(Cafe cafe) {
         if (buscarCafe(cafe) != -1) {
             System.out.println("No se pudo agregar, el cafe ya esta a la venta");
             return;
@@ -32,34 +41,7 @@ public class Cafeteria {
         cafesALaVenta.add(cafe);
     }
 
-    public boolean cafeNoValido(Cafe cafe) {
-        try {
-            verificarParametrosCafe(cafe);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return true;
-        }
-        return false;
-    }
-
-    public void verificarParametrosCafe(Cafe cafe) {
-        if (cafe.getTipo() == null) {
-            throw new IllegalArgumentException("Debe indicar un tipo de cafe");
-        }
-        if (cafe.getGramos() <= 0) {
-            throw new IllegalArgumentException("Los gramos deben ser mayor a cero");
-        }
-        if (cafe.getMlAgua() <= 0) {
-            throw new IllegalArgumentException("Los ml de agua deben ser mayor a cero");
-        }
-        if (cafe.getSize() == null) {
-            throw new IllegalArgumentException("Debe ser un tamaño que este disponible");
-        }
-    }
-
     public void eliminarCafeALaVenta(Cafe cafe) {
-        if (cafeNoValido(cafe)) return;
-
         int indiceCafe = buscarCafe(cafe);
         if (indiceCafe == -1) {
             System.out.println("No se pudo eliminar, el cafe no esta a la venta");
@@ -70,24 +52,21 @@ public class Cafeteria {
 
     public int buscarCafe(Cafe cafe) {
         return IntStream.range(0, cafesALaVenta.size())
-                .filter(indice -> sonCafesIguales(cafesALaVenta.get(indice), cafe))
+                .filter(indice -> cafe.sonIguales(cafesALaVenta.get(indice)))
                 .findFirst()
                 .orElse(-1);
     }
 
-    public boolean sonCafesIguales(Cafe cafeBuscado, Cafe cafe) {
-        return cafe.getTipo().equals(cafeBuscado.getTipo()) &&
-                cafe.getSize().equals(cafeBuscado.getSize());
+    public void agregarTrabajador(Trabajador trabajador) {
+        trabajadores.add(trabajador);
+    }
+
+    public void asociarCliente(Cliente cliente) {
+        clientes.add(cliente);
     }
 
     @Override
     public String toString() {
-        return "Cafeteria{" +
-                "sizesDisponibles=" + Arrays.toString(Size.values()) +
-                ", nombre='" + nombre + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", redesSociales=" + rrss +
-                ", cafesALaVenta=" + cafesALaVenta +
-                "}";
+        return "Cafeteria{" + "sizesDisponibles=" + Arrays.toString(Size.values()) + ", nombre='" + nombre + '\'' + ", direccion='" + direccion + '\'' + ", redesSociales=" + redesSociales + ", cafesALaVenta=" + cafesALaVenta + "}";
     }
 }

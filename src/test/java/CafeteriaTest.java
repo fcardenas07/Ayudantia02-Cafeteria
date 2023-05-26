@@ -1,31 +1,28 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class CafeteriaTest {
     private Cafeteria cafeteria;
 
     @BeforeEach
     void setUp() {
-        List<Cafe> cafesVenta = new ArrayList<>();
-        cafesVenta.add(new Cafe(Tipo.NORMAL, 150, 200, Size.MEDIANO));
-        cafesVenta.add(new Cafe(Tipo.EXPRESS, 200, 250, Size.GRANDE));
+        cafeteria = new Cafeteria("Cafeteria", "Av 01", new ArrayList<>());
+        cafeteria.agregarCafeALaVenta(new Cafe(CafeTipo.LATTE, Size.MEDIANO, 200, 150));
+        cafeteria.agregarCafeALaVenta(new Cafe(CafeTipo.EXPRESSO, Size.GRANDE, 250, 200));
 
-        cafeteria = new Cafeteria("Coffe Shop", "Av 01", new ArrayList<>(), cafesVenta, new ArrayList<>());
     }
 
     @Test
     void buscarCafe_noDebeRetornarMenosUno_cuandoElCafeBuscadoEstaAlaVenta() {
-        Cafe cafeBuscado1 = new Cafe(Tipo.NORMAL, 150, 200, Size.MEDIANO);
-        Cafe cafeBuscado2 = new Cafe(Tipo.EXPRESS, 200, 250, Size.GRANDE);
+        Cafe cafeBuscado1 = new Cafe(CafeTipo.LATTE, Size.MEDIANO, 200, 150);
+        Cafe cafeBuscado2 = new Cafe(CafeTipo.EXPRESSO, Size.GRANDE, 250, 200);
 
         assertNotEquals(-1, cafeteria.buscarCafe(cafeBuscado1));
         assertNotEquals(-1, cafeteria.buscarCafe(cafeBuscado2));
@@ -33,56 +30,14 @@ class CafeteriaTest {
 
     @Test
     void buscarCafe_debeRetornarMenosUno_cuandoElCafeBuscadoNoEstaAlaVenta() {
-        Cafe cafeBuscado = new Cafe(Tipo.MOKA, 150, 200, Size.MEDIANO);
+        Cafe cafeBuscado = new Cafe(CafeTipo.MOKA, Size.MEDIANO, 200, 150);
 
         assertEquals(-1, cafeteria.buscarCafe(cafeBuscado));
     }
 
     @Test
-    void verificarParametrosCafe_debeArrojarUnaExcepcion_cuandoSeAgregaCafeConTipoNull() {
-        Cafe cafe = new Cafe(null, 200, 250, Size.GRANDE);
-
-        var exception = assertThrows(IllegalArgumentException.class,
-                () -> cafeteria.verificarParametrosCafe(cafe));
-
-        assertEquals("Debe indicar un tipo de cafe", exception.getMessage());
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {0, -1, Integer.MIN_VALUE})
-    void verificarParametrosCafe_debeArrojarUnaExcepcion_cuandoSeAgregaCafeConGramosMenoresACero(int gramos) {
-        Cafe cafe = new Cafe(Tipo.MOKA, gramos, 250, Size.GRANDE);
-
-        var exception = assertThrows(IllegalArgumentException.class,
-                () -> cafeteria.verificarParametrosCafe(cafe));
-
-        assertEquals("Los gramos deben ser mayor a cero", exception.getMessage());
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {0, -1, Integer.MIN_VALUE})
-    void verificarParametrosCafe_debeArrojarUnaExcepcion_cuandoSeAgregaCafeConMlAguaMenoresACero(int mlAgua) {
-        Cafe cafe = new Cafe(Tipo.MOKA, 200, mlAgua, Size.GRANDE);
-
-        var exception = assertThrows(IllegalArgumentException.class,
-                () -> cafeteria.verificarParametrosCafe(cafe));
-
-        assertEquals("Los ml de agua deben ser mayor a cero", exception.getMessage());
-    }
-
-    @Test
-    void verificarParametrosCafe_debeArrojarUnaExcepcion_cuandoSeAgregaCafeConSizeNull() {
-        Cafe cafe = new Cafe(Tipo.EXPRESS, 200, 250, null);
-
-        var exception = assertThrows(IllegalArgumentException.class,
-                () -> cafeteria.verificarParametrosCafe(cafe));
-
-        assertEquals("Debe ser un tamaño que este disponible", exception.getMessage());
-    }
-
-    @Test
     void agregarCafeALaVenta_debeAgregarNuevoCafe_cuandoNoEstaALaVenta() {
-        Cafe nuevoCafe = new Cafe(Tipo.CAPUCHINO, 200, 250, Size.MEDIANO);
+        Cafe nuevoCafe = new Cafe(CafeTipo.CAPUCHINO, Size.MEDIANO, 250, 200);
         int sizeOriginal = cafeteria.getCafesALaVenta().size();
 
         cafeteria.agregarCafeALaVenta(nuevoCafe);
@@ -95,7 +50,7 @@ class CafeteriaTest {
 
     @Test
     void agregarCafeALaVenta_noDebeAgregarNuevoCafe_cuandoYaEstaALaVenta() {
-        Cafe nuevoCafe = new Cafe(Tipo.EXPRESS, 200, 250, Size.GRANDE);
+        Cafe nuevoCafe = new Cafe(CafeTipo.EXPRESSO, Size.GRANDE, 250, 200);
 
         cafeteria.agregarCafeALaVenta(nuevoCafe);
 
@@ -106,7 +61,7 @@ class CafeteriaTest {
 
     @Test
     void eliminarCafeALaVenta_debeEliminarCafe_cuandoYaEstaALaVenta() {
-        Cafe cafeAEliminar = new Cafe(Tipo.EXPRESS, 200, 250, Size.GRANDE);
+        Cafe cafeAEliminar = new Cafe(CafeTipo.EXPRESSO, Size.GRANDE, 250, 200);
         int sizeOriginal = cafeteria.getCafesALaVenta().size();
 
         cafeteria.eliminarCafeALaVenta(cafeAEliminar);
@@ -117,9 +72,8 @@ class CafeteriaTest {
     }
 
     @Test
-//    @CaptureSystemOutput
     void eliminarCafeALaVenta_debeMostrarMensaje_cuandoElCafeNoEstaALaVenta() {
-        Cafe cafe = new Cafe(Tipo.MOKA, 200, 250, Size.GRANDE);
+        Cafe cafe = new Cafe(CafeTipo.MOKA, Size.GRANDE, 250, 200);
 
         // Crear una instancia de ByteArrayOutputStream para redirigir la salida de consola
         var outputStream = new ByteArrayOutputStream();
@@ -133,5 +87,33 @@ class CafeteriaTest {
         String mensajeSalida = outputStream.toString().trim();
 
         assertEquals(mensajeEsperado, mensajeSalida);
+    }
+
+    @Test
+    void agregarTrabajador() {
+        Trabajador trabajador = new Trabajador("Trabajador", Trabajador.Rol.BARISTA);
+        int sizeInicial = cafeteria.getTrabajadores().size();
+
+        cafeteria.agregarTrabajador(trabajador);
+
+        int size = cafeteria.getTrabajadores().size();
+        Trabajador actual = cafeteria.getTrabajadores().get(size - 1);
+
+        assertEquals(sizeInicial + 1, size);
+        assertEquals(trabajador, actual);
+    }
+
+    @Test
+    void asociarCliente() {
+        Cliente cliente = new Cliente("Cliente");
+        int sizeInicial = cafeteria.getClientes().size();
+
+        cafeteria.asociarCliente(cliente);
+
+        int size = cafeteria.getClientes().size();
+        Cliente actual = cafeteria.getClientes().get(size - 1);
+
+        assertEquals(sizeInicial + 1, size);
+        assertEquals(cliente, actual);
     }
 }
