@@ -1,9 +1,11 @@
-public enum Size {
-    PEQUEÑO(100), MEDIANO(200), GRANDE(300);
+package modelo;
+
+public enum TeTipo {
+    NORMAL(1000), VERDE(1200), NEGRO(1300);
 
     private final int precio;
 
-    Size(int precio) {
+    TeTipo(int precio) {
         this.precio = precio;
     }
 

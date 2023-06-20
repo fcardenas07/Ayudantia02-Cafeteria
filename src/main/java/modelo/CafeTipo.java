@@ -1,3 +1,5 @@
+package modelo;
+
 public enum CafeTipo {
     EXPRESSO(1000),
     MOKA(1200),

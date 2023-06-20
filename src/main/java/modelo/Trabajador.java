@@ -1,3 +1,5 @@
+package modelo;
+
 public class Trabajador {
     private final String nombre;
     private final Rol rol;
@@ -9,9 +11,5 @@ public class Trabajador {
 
     public void trabajar() {
         System.out.println("Trabajando...");
-    }
-
-    public enum Rol {
-        BARISTA, MESERO, COCINERO
     }
 }

@@ -1,3 +1,5 @@
+package modelo;
+
 import java.util.Random;
 
 public class Cliente {
@@ -18,21 +20,12 @@ public class Cliente {
         return dinero;
     }
 
-    public void comprarCafe(Cafe cafe) {
-        pagar(cafe.calcularPrecio());
-    }
-
-    public void comprarTe(Te te) {
-        pagar(te.calcularPrecio());
-    }
-
-    public void comprarLeche(Leche leche) {
-        pagar(leche.calcularPrecio());
+    public void comprar(Producto producto) {
+        pagar(producto.calcularPrecio());
     }
 
     private void pagar(int precio) {
         if (precio > dinero) throw new RuntimeException("Sin suficiente dinero");
         dinero -= precio;
     }
-
 }
