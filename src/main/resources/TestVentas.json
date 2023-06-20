@@ -1,0 +1,74 @@
+[
+  {
+    "fecha": "2023-06-18",
+    "productos": [
+      {
+        "type": "modelo.Te",
+        "data": {
+          "tipo": "VERDE",
+          "size": "MEDIANO",
+          "precio": 1400,
+          "categoria": "TE"
+        }
+      },
+      {
+        "type": "modelo.Cafe",
+        "data": {
+          "tipo": "EXPRESSO",
+          "size": "PEQUEÑO",
+          "precio": 1100,
+          "categoria": "CAFE"
+        }
+      }
+    ],
+    "total": 2500
+  },
+  {
+    "fecha": "2023-06-18",
+    "productos": [
+      {
+        "type": "modelo.Te",
+        "data": {
+          "tipo": "VERDE",
+          "size": "MEDIANO",
+          "precio": 1400,
+          "categoria": "TE"
+        }
+      },
+      {
+        "type": "modelo.Cafe",
+        "data": {
+          "tipo": "EXPRESSO",
+          "size": "PEQUEÑO",
+          "precio": 1100,
+          "categoria": "CAFE"
+        }
+      }
+    ],
+    "total": 2500
+  },
+  {
+    "fecha": "2023-06-19",
+    "productos": [
+      {
+        "type": "modelo.Te",
+        "data": {
+          "tipo": "VERDE",
+          "size": "MEDIANO",
+          "precio": 1400,
+          "categoria": "TE"
+        }
+      },
+      {
+        "type": "modelo.Cafe",
+        "data": {
+          "tipo": "EXPRESSO",
+          "size": "PEQUEÑO",
+          "precio": 1100,
+          "categoria": "CAFE"
+        }
+      }
+    ],
+    "total": 2500
+  }
+]
