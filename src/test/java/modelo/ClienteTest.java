@@ -1,3 +1,5 @@
+package modelo;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,16 +17,16 @@ class ClienteTest {
         clienteSinDinero = new Cliente("Cliente1", 0);
         clienteConDinero = new Cliente("Cliente2", 10_000);
 
-        cafe = new Cafe(CafeTipo.EXPRESSO, Size.GRANDE, 100, 100);
+        cafe = new Cafe(CafeTipo.EXPRESSO, Size.GRANDE);
         leche = new Leche(Size.GRANDE);
-        te = new Te(TeTipo.NORMAL, Size.PEQUEÑO, 100, 100);
+        te = new Te(TeTipo.NORMAL, Size.PEQUEÑO);
     }
 
     @Test
     void comprarVariosProductos_debeDescontarElPrecio_cuandoTieneDinero() {
-        clienteConDinero.comprarCafe(cafe); //1300
-        clienteConDinero.comprarTe(te); //1100
-        clienteConDinero.comprarLeche(leche); //1300
+        clienteConDinero.comprar(cafe); //1300
+        clienteConDinero.comprar(te); //1100
+        clienteConDinero.comprar(leche); //1300
 
         int dineroRestante = clienteConDinero.getDinero();
 
@@ -34,7 +36,7 @@ class ClienteTest {
     @Test
     void comprarCafe_debeArrojarExcepcion_cuandoNoTieneDineroSuficiente() {
         RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> clienteSinDinero.comprarCafe(cafe));
+                () -> clienteSinDinero.comprar(cafe));
 
         assertEquals("Sin suficiente dinero", exception.getMessage());
         assertEquals(0, clienteSinDinero.getDinero());
